@@ -1,0 +1,17 @@
+@using PersonalPortfolio.Components
+
+@* Views/Home/About.cshtml *@
+<div class="container mt-5 pt-5">
+    <h1 class="display-4 text-center mb-5">About Me</h1>
+    <div class="mb-5">
+        <h3 class="mb-4">Technical Skills</h3>
+        <div class="skills-container">
+            @foreach (var skill in ViewBag.Skills as List<PersonalPortfolio.Models.Skill>)
+            {
+                <component type="typeof(SkillBadge)"
+                           render-mode="ServerPrerendered"
+                           param-Skill="skill" />
+            }
+        </div>
+    </div>
+</div>

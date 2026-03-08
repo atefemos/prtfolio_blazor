@@ -1,0 +1,83 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using PersonalPortfolio.Models
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Get In Touch</h3>
+        @if (!string.IsNullOrEmpty(_statusMessage))
+        {
+            <div class="alert @(_isSuccess ? "alert-success" : "alert-danger")" role="alert">
+                @_statusMessage
+            </div>
+        }
+        <EditForm Model="_contactMessage" OnValidSubmit="HandleSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary/>
+            <!-- Add form fields for Name, Email, Subject, Message -->
+            <!-- Include validation messages -->
+            
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <InputText class="form-control" @bind-Value="_contactMessage.Name" />
+                <ValidationMessage For="@(() => _contactMessage.Name)" />
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <InputText class="form-control" @bind-Value="_contactMessage.Email" />
+                <ValidationMessage For="@(() => _contactMessage.Email)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Message</label>
+                <InputTextArea class="form-control" rows="4" @bind-Value="_contactMessage.Message" />
+                <ValidationMessage For="@(() => _contactMessage.Message)" />
+            </div>
+            <!-- Add submit button with loading state -->
+            <button class="btn btn-primary" type="submit" disabled="@_isSubmitting">
+                @if (_isSubmitting)
+                {
+                    <span class="spinner-border spinner-border-sm"></span>
+                    <span class="ms-2">Sending...</span>
+                }
+                else
+                {
+                    <span>Send Message</span>
+                }
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private ContactMessage _contactMessage = new();
+    private bool _isSubmitting = false;
+    private bool _isSuccess = false;
+    private string _statusMessage = string.Empty;
+
+    private async Task HandleSubmit()
+    {
+        _isSubmitting = true;
+        _statusMessage = string.Empty;
+        try
+        {
+            _contactMessage.SubmittedAt = DateTime.UtcNow;
+
+            // Simulate API call
+            await Task.Delay(1000);
+
+            _isSuccess = true;
+            _statusMessage = "Thank you! Your message has been sent successfully.";
+            _contactMessage = new ContactMessage(); // Reset form
+        }
+        catch (Exception)
+        {
+            _isSuccess = false;
+            _statusMessage = "Sorry, there was an error sending your message.";
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

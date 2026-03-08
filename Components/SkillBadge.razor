@@ -1,0 +1,10 @@
+@using PersonalPortfolio.Models
+
+<span class="badge bg-primary me-2">
+    @Skill.Name
+</span>
+
+@code {
+    [Parameter]
+    public Skill Skill { get; set; }
+}

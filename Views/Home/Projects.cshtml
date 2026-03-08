@@ -1,0 +1,19 @@
+@using PersonalPortfolio.Components
+@{
+    ViewData["Title"] = "Projects";
+}
+<div class="container mt-5 pt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">My Projects</h1>
+        <p class="lead">Here are some of the projects I've worked on recently</p>
+    </div>
+    
+    <div class="row">
+        @foreach (var project in ViewBag.Projects as List<PersonalPortfolio.Models.Project>)
+        {
+            <component type="typeof(ProjectCard)"
+                       render-mode="ServerPrerendered"
+                       param-Project="project" />
+        }
+    </div>
+</div>
